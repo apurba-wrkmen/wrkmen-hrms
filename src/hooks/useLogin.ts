@@ -1,20 +1,24 @@
 import { login as loginApi } from "@/services/login.api";
-import { useMutation } from "@tanstack/react-query";
+import { logout } from "@/services/logout.api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 // 👈 Import actual login function
 
 export const useLogin = () => {
     const navigate = useNavigate()
-    
+    const queryClient = useQueryClient();
     const { mutate: login, isPending } = useMutation({
 
 
         mutationFn: (data) => loginApi(data),
         onSuccess: (res) => {
             toast.success("Account Verified");
-            console.log(res);
-            navigate("/dashboard")
+            queryClient.invalidateQueries(["user"]);
+            setTimeout(() => navigate("/dashboard", { replace: true })
+                , 2000)
+
+            // console.log(res);
 
             // Optionally navigate after success
         },
@@ -27,3 +31,21 @@ export const useLogin = () => {
 
     return { login, isPending }
 };
+
+export const useLogout = () => {
+    const navigate = useNavigate()
+    const queryClient = useQueryClient();
+    const { mutate: logouts, isPending } = useMutation({
+        mutationFn: logout,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["user"]);
+            // Optional: Redirect after logout
+            navigate("/auth/login");
+        },
+        onError: (error) => {
+            console.error("Logout failed:", error.message);
+        },
+    });
+    return { logouts, isPending }
+}
+

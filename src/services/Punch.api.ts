@@ -1,5 +1,19 @@
 import supabase from "@/services/supabase"
 
+export const punchDetailsApi = async (id, date) => {
+    console.log("API Call:", id, date);  // ✅ DEBUG
+    const { data: res, error } = await supabase
+        .from("work_logs")
+        .select("*")
+        .eq("user_id", id)
+        .eq("date", date);
+
+    // console.log(res)
+    if (error) throw new Error(error.message);
+    return res;
+};
+
+
 export const punchInApi = async (data) => {
 
     const { data: res, error } = await supabase
