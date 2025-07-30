@@ -2,7 +2,7 @@ import { punchDetailsApi, punchInApi, punchOutApi } from "@/services/Punch.api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-export const usePunchDetails = (id: string | undefined, date: string) => {
+export const usePunchDetails = (id: string , date: string) => {
     const { data: punchDet, isPending } = useQuery({
         queryKey: ["punchDetailsApi", id, date],
         queryFn: () => punchDetailsApi(id, date),

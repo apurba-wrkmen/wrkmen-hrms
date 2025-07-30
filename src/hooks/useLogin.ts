@@ -4,42 +4,45 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+interface LoginData {
+  email: string;
+  password: string;
+}
+
 export const useLogin = () => {
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-    const { mutate: login, isPending } = useMutation({
-        mutationFn: (data: { email: string; password: string }) => loginApi(data),
+  const { mutate: login, isPending } = useMutation({
+    mutationFn: (data: LoginData) => loginApi(data),
+    onSuccess: () => {
+      toast.success("Account Verified");
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      setTimeout(() => navigate("/dashboard", { replace: true }), 2000);
+    },
+    onError: (err: Error) => {
+      toast.error(err.message || "Login failed");
+      console.error("Login error:", err);
+    },
+  });
 
-        onSuccess: () => {
-            toast.success("Account Verified");
-            queryClient.invalidateQueries({ queryKey: ["user"] });
-            setTimeout(() => navigate("/dashboard", { replace: true }), 2000);
-        },
-
-        onError: (err: Error) => {
-            toast.error(err.message || "Login failed");
-            console.error("Login error:", err);
-        }
-    });
-
-    return { login, isPending };
+  return { login, isPending };
 };
 
 export const useLogout = () => {
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-    const { mutate: logouts, isPending } = useMutation({
-        mutationFn: logout,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["user"] });
-            navigate("/auth/login");
-        },
-        onError: (error: Error) => {
-            console.error("Logout failed:", error.message);
-        },
-    });
+  const { mutate: logouts, isPending } = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      navigate("/auth/login");
+    },
+    onError: (error: Error) => {
+      console.error("Logout failed:", error.message);
+    },
+  });
 
-    return { logouts, isPending };
+  return { logouts, isPending };
 };

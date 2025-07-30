@@ -1,7 +1,13 @@
 import supabase from "@/services/supabase";
 
+interface PunchData {
+  id: string;
+  date: string;
+  checekInTime?: string;
+  checekOutTime?: string;
+}
+
 export const punchDetailsApi = async (id: string, date: string) => {
-  console.log("API Call:", id, date);
   const { data: res, error } = await supabase
     .from("work_logs")
     .select("*")
@@ -11,13 +17,6 @@ export const punchDetailsApi = async (id: string, date: string) => {
   if (error) throw new Error(error.message);
   return res;
 };
-
-interface PunchData {
-  id: string;
-  date: string;
-  checekInTime?: string;
-  checekOutTime?: string;
-}
 
 export const punchInApi = async (data: PunchData) => {
   const { data: res, error } = await supabase
