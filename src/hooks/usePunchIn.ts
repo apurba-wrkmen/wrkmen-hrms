@@ -50,7 +50,7 @@ export function usePunchOut() {
     mutationFn: (data: PunchData) => punchOutApi(data),
     onSuccess: (res) => {
       toast.success("Punched out");
-      console.log(res);
+    //   console.log(res);
       queryClient.invalidateQueries({ queryKey: ["punchDetailsApi"] });
     },
     onError: (err: Error) => {
