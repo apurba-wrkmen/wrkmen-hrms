@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Label } from "@radix-ui/react-label";
 import { useLogin } from "@/hooks/useLogin";
 import toast from "react-hot-toast";

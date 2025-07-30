@@ -4,7 +4,6 @@ import { useEmployeeDetails } from "@/hooks/useEmployeeDetails";
 import { useLogout } from "@/hooks/useLogin";
 import { usePunchDetails, usePunchIn, usePunchOut } from "@/hooks/usePunchIn";
 import { useUser } from "@/hooks/useUser";
-import toast from "react-hot-toast";
 import wrkmne_hrms from "@/assets/wrkmen_hrms.svg";
 import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
@@ -21,8 +20,9 @@ export default function Dashboard() {
   const userEmail = user?.user?.email;
   const userId = user?.user?.id;
 
-  const { punchDet } = usePunchDetails(userId, today);
-  const { employee } = useEmployeeDetails(userId);
+  // Only call hooks when userId is available
+  const { punchDet } = userId ? usePunchDetails(userId, today) : { punchDet: [] };
+  const { employee } = userId ? useEmployeeDetails(userId) : { employee: [] };
 
   const isPunchedIn = Boolean(punchDet?.[0]?.checked_in);
   const isPunchedOut = Boolean(punchDet?.[0]?.checked_out);
@@ -66,6 +66,7 @@ export default function Dashboard() {
     logouts();
   };
 
+
   return (
     <section className="h-screen">
       <section className="flex items-center justify-center px-3 py-3 rounded-2xl shadow-md w-fit mx-auto">
@@ -87,7 +88,8 @@ export default function Dashboard() {
               <MdOutlineNotificationsNone className="w-8 h-8 text-primary2" />
               <div className="uppercase">
                 <h3 className="font-bold">
-                  {employee?.[0]?.firstName || ""} {employee?.[0]?.lastName || ""}
+                  {employee?.[0]?.firstName || ""}{" "}
+                  {employee?.[0]?.lastName || ""}
                 </h3>
                 <h3>{employee?.[0]?.designation || ""}</h3>
               </div>
@@ -110,7 +112,8 @@ export default function Dashboard() {
                   <UserAvatarFilled />
                   <div className="uppercase">
                     <h2 className="font-bold">
-                      {employee?.[0]?.firstName || ""} {employee?.[0]?.lastName || ""}
+                      {employee?.[0]?.firstName || ""}{" "}
+                      {employee?.[0]?.lastName || ""}
                     </h2>
                     <h3>{employee?.[0]?.designation || ""}</h3>
                   </div>
@@ -143,8 +146,12 @@ export default function Dashboard() {
                     <p>⚠️ See you again tomorrow</p>
                   ) : (
                     <>
-                      {!isPunchedIn && <Button onClick={handlePunchIn}>Punch In</Button>}
-                      {isPunchedIn && !isPunchedOut && <Button onClick={handlePunchOut}>Punch Out</Button>}
+                      {!isPunchedIn && (
+                        <Button onClick={handlePunchIn}>Punch In</Button>
+                      )}
+                      {isPunchedIn && !isPunchedOut && (
+                        <Button onClick={handlePunchOut}>Punch Out</Button>
+                      )}
                     </>
                   )}
                 </div>
