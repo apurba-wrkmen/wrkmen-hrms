@@ -5,10 +5,12 @@ import { useUser } from "./hooks/useUser";
 export default function AuthProtected() {
   const navigate = useNavigate();
   const { user, isPending } = useUser();
-
   useEffect(() => {
     if (!isPending && user === null) {
-      navigate("/", { replace: true });
+      const timeout = setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 300); // Wait a bit to ensure state is stable
+      return () => clearTimeout(timeout);
     }
   }, [isPending, user, navigate]);
 
