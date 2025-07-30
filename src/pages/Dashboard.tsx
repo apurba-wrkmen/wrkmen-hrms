@@ -69,8 +69,9 @@ export default function Dashboard() {
 
   return (
     <section className="h-screen">
-      <section className="flex items-center justify-center px-3 py-3 rounded-2xl shadow-md w-fit mx-auto">
-        <div className="flex">
+      <section className="flex px-3 py-3 rounded-2xl shadow-md w-fit mx-auto">
+        {/* left */}
+        <div className="flex ">
           <div className="w-50 flex flex-col justify-between items-center">
             <img src={wrkmne_hrms} alt="" className="h-30 pt-10" />
             <div className="pb-10">
