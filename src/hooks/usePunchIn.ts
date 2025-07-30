@@ -48,7 +48,7 @@ export function usePunchOut() {
 
   const { mutate: punchoutTWO, isPending } = useMutation({
     mutationFn: (data: PunchData) => punchOutApi(data),
-    onSuccess: (res) => {
+    onSuccess: () => {
       toast.success("Punched out");
     //   console.log(res);
       queryClient.invalidateQueries({ queryKey: ["punchDetailsApi"] });
