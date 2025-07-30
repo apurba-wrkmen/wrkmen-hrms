@@ -3,49 +3,43 @@ import { logout } from "@/services/logout.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-// 👈 Import actual login function
 
 export const useLogin = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
+
     const { mutate: login, isPending } = useMutation({
+        mutationFn: (data: { email: string; password: string }) => loginApi(data),
 
-
-        mutationFn: (data) => loginApi(data),
-        onSuccess: (res) => {
+        onSuccess: () => {
             toast.success("Account Verified");
-            queryClient.invalidateQueries(["user"]);
-            setTimeout(() => navigate("/dashboard", { replace: true })
-                , 2000)
-
-            // console.log(res);
-
-            // Optionally navigate after success
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+            setTimeout(() => navigate("/dashboard", { replace: true }), 2000);
         },
 
-        onError: (err: any) => {
+        onError: (err: Error) => {
             toast.error(err.message || "Login failed");
             console.error("Login error:", err);
         }
-    })
+    });
 
-    return { login, isPending }
+    return { login, isPending };
 };
 
 export const useLogout = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
+
     const { mutate: logouts, isPending } = useMutation({
         mutationFn: logout,
         onSuccess: () => {
-            queryClient.invalidateQueries(["user"]);
-            // Optional: Redirect after logout
+            queryClient.invalidateQueries({ queryKey: ["user"] });
             navigate("/auth/login");
         },
-        onError: (error) => {
+        onError: (error: Error) => {
             console.error("Logout failed:", error.message);
         },
     });
-    return { logouts, isPending }
-}
 
+    return { logouts, isPending };
+};

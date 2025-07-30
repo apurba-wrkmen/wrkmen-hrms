@@ -2,7 +2,7 @@
 import { fetchEmployee } from "@/services/fetchEmployee.api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useEmployeeDetails = (id) => {
+export const useEmployeeDetails = (id:unknown) => {
     // console.log("Fetching employee with email:", id);
     const { data: employee, isPending, isError, } = useQuery({
         queryKey: ["employee", id],

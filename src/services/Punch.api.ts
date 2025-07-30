@@ -1,44 +1,48 @@
-import supabase from "@/services/supabase"
+import supabase from "@/services/supabase";
 
-export const punchDetailsApi = async (id, date) => {
-    console.log("API Call:", id, date);  // ✅ DEBUG
-    const { data: res, error } = await supabase
-        .from("work_logs")
-        .select("*")
-        .eq("user_id", id)
-        .eq("date", date);
+export const punchDetailsApi = async (id: string, date: string) => {
+  console.log("API Call:", id, date);
+  const { data: res, error } = await supabase
+    .from("work_logs")
+    .select("*")
+    .eq("user_id", id)
+    .eq("date", date);
 
-    // console.log(res)
-    if (error) throw new Error(error.message);
-    return res;
+  if (error) throw new Error(error.message);
+  return res;
 };
 
-
-export const punchInApi = async (data) => {
-
-    const { data: res, error } = await supabase
-        .from('work_logs')
-        .insert([
-            { "checked_in": data.checekInTime, "date": data.date, "user_id": data.id }
-        ])
-        .select()
-
-
-    if (error) throw new Error(error.message)
-    return res
+interface PunchData {
+  id: string;
+  date: string;
+  checekInTime?: string;
+  checekOutTime?: string;
 }
 
+export const punchInApi = async (data: PunchData) => {
+  const { data: res, error } = await supabase
+    .from("work_logs")
+    .insert([
+      {
+        checked_in: data.checekInTime,
+        date: data.date,
+        user_id: data.id,
+      },
+    ])
+    .select();
 
-export const punchOutApi = async (data) => {
+  if (error) throw new Error(error.message);
+  return res;
+};
 
-    const { data: res, error } = await supabase
-        .from('work_logs')
-        .update({ checked_out: data.checekOutTime })
-        .eq("user_id", data.id)
-        .eq("date", data.date)
-        .select()
+export const punchOutApi = async (data: PunchData) => {
+  const { data: res, error } = await supabase
+    .from("work_logs")
+    .update({ checked_out: data.checekOutTime })
+    .eq("user_id", data.id)
+    .eq("date", data.date)
+    .select();
 
-
-    if (error) throw new Error(error.message)
-    return res
-}
+  if (error) throw new Error(error.message);
+  return res;
+};
