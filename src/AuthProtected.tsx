@@ -8,7 +8,7 @@ export default function AuthProtected() {
 
   useEffect(() => {
     if (!isPending && user === null) {
-      navigate("/auth/login", { replace: true });
+      navigate("/", { replace: true });
     }
   }, [isPending, user, navigate]);
 
