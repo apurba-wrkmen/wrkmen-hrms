@@ -5,7 +5,7 @@ import { useLogout } from "@/hooks/useLogin";
 import { usePunchDetails, usePunchIn, usePunchOut } from "@/hooks/usePunchIn";
 import { useUser } from "@/hooks/useUser";
 import wrkmne_hrms from "@/assets/wrkmen_hrms.svg";
-import { CgProfile } from "react-icons/cg";
+// import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { UserAvatarFilled } from "@/shared/UserAvatarFilled";
