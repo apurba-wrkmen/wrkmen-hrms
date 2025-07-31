@@ -3,6 +3,7 @@ import supabase from "@/services/supabase";
 interface PunchData {
   id: string;
   date: string;
+  email?:string;
   checekInTime?: string;
   checekOutTime?: string;
 }
@@ -26,6 +27,7 @@ export const punchInApi = async (data: PunchData) => {
         checked_in: data.checekInTime,
         date: data.date,
         user_id: data.id,
+        email: data.email,
       },
     ])
     .select();

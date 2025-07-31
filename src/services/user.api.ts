@@ -13,3 +13,7 @@ export async function getUser() {
     role: "authenticated", // or use a real role if stored in user_metadata
   };
 }
+
+
+
+

@@ -1,5 +1,6 @@
 import { login as loginApi } from "@/services/login.api";
 import { logout } from "@/services/logout.api";
+import { resetPassword } from "@/services/resetpassword.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +37,7 @@ export const useLogout = () => {
   const { mutate: logouts, isPending } = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.removeQueries()
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/", { replace: true });
     },
     onError: (error: Error) => {
@@ -45,4 +46,27 @@ export const useLogout = () => {
   });
 
   return { logouts, isPending };
+};
+
+export const useUdatePassword = () => {
+  // const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate: resetPass, isPending } = useMutation({
+    mutationFn: (data: string) => resetPassword(data),
+    onSuccess: () => {
+      queryClient.removeQueries()
+      toast.success("Password update Succesfull")
+      // navigate("/", { replace: true });
+    },
+    onError: (error: Error) => {
+      toast.error("Password failed")
+      console.error("Password Reset failed", error.message);
+    },
+  });
+
+
+
+
+  return { resetPass, isPending };
 };

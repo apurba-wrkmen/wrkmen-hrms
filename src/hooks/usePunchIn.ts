@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 type PunchData = {
   id: string;
   date: string;
+  email?: string;
+
 };
 
 // type PunchOutData = {
@@ -36,6 +38,7 @@ export function usePunchIn() {
       console.error(err.message);
       toast.error("Punch-in failed");
     },
+    
   });
 
   return { punch, isPending };
@@ -50,7 +53,7 @@ export function usePunchOut() {
     mutationFn: (data: PunchData) => punchOutApi(data),
     onSuccess: () => {
       toast.success("Punched out");
-    //   console.log(res);
+      //   console.log(res);
       queryClient.invalidateQueries({ queryKey: ["punchDetailsApi"] });
     },
     onError: (err: Error) => {

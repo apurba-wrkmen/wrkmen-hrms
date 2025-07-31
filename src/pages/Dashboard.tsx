@@ -9,6 +9,7 @@ import { CgProfile } from "react-icons/cg";
 import { TbLogout2 } from "react-icons/tb";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { UserAvatarFilled } from "@/shared/UserAvatarFilled";
+import PasswordReset from "@/components/PasswordReset";
 
 export default function Dashboard() {
   const today = new Date().toISOString().slice(0, 10);
@@ -21,7 +22,9 @@ export default function Dashboard() {
   const userId = user?.user?.id;
 
   // Only call hooks when userId is available
-  const { punchDet } = userId ? usePunchDetails(userId, today) : { punchDet: [] };
+  const { punchDet } = userId
+    ? usePunchDetails(userId, today)
+    : { punchDet: [] };
   const { employee } = userId ? useEmployeeDetails(userId) : { employee: [] };
 
   const isPunchedIn = Boolean(punchDet?.[0]?.checked_in);
@@ -40,6 +43,7 @@ export default function Dashboard() {
         second: "2-digit",
       }),
       id: userId,
+      email: userEmail,
     };
 
     punch(punchInData);
@@ -66,9 +70,8 @@ export default function Dashboard() {
     logouts();
   };
 
-
   return (
-    <section className="h-screen">
+    <section className="h-screen  ">
       <section className="flex px-3 py-3 rounded-2xl shadow-md w-fit mx-auto">
         {/* left */}
         <div className="flex ">
@@ -87,14 +90,18 @@ export default function Dashboard() {
             {/* Header */}
             <section className="flex justify-end gap-2 items-center text-right rounded-2xl text-primary2 px-3 py-3 shadow-md">
               <MdOutlineNotificationsNone className="w-8 h-8 text-primary2" />
-              <div className="uppercase">
+              <div className="uppercase flex flex-col items-end">
                 <h3 className="font-bold">
                   {employee?.[0]?.firstName || ""}{" "}
                   {employee?.[0]?.lastName || ""}
                 </h3>
-                <h3>{employee?.[0]?.designation || ""}</h3>
+                <div className="bg-background2 w-fit px-2 py-0.5 rounded-xl flex justify-end">
+                  <h3 className="font-bold text-white ">
+                    {employee?.[0]?.designation || ""}
+                  </h3>
+                </div>
               </div>
-              <CgProfile className="w-8 h-8 text-primary2" />
+              {/* <CgProfile className="w-8 h-8 text-primary2" /> */}
             </section>
 
             {/* Welcome Card */}
@@ -112,11 +119,10 @@ export default function Dashboard() {
                 <div className="bg-amber-50 flex items-center gap-2 px-10 py-3">
                   <UserAvatarFilled />
                   <div className="uppercase">
-                    <h2 className="font-bold">
-                      {employee?.[0]?.firstName || ""}{" "}
-                      {employee?.[0]?.lastName || ""}
-                    </h2>
-                    <h3>{employee?.[0]?.designation || ""}</h3>
+                    <h2 className="font-bold">Employee Code</h2>
+                    <h3 className="text-primary2 font-bold">
+                      {employee?.[0]?.employeeCode || ""}
+                    </h3>
                   </div>
                 </div>
 
@@ -139,7 +145,7 @@ export default function Dashboard() {
               {/* Punch Box */}
               <section>
                 <div className="flex flex-col gap-3 items-center font-bold">
-                  <h2>Start Your Workday with a Tap</h2>
+                  {/* {!punchDet && isCompleted ? <h2>Start Your Workday with a Tap</h2> : ""} */}
                   <Watch />
                 </div>
                 <div className="flex items-center justify-center py-10 font-bold">
@@ -173,6 +179,9 @@ export default function Dashboard() {
                   <p>{punchDet?.[0]?.work_duration || "N/A"}</p>
                 </div>
               </section>
+            </section>
+            <section className="flex flex-col gap-4 rounded-2xl px-3 py-3 shadow-md w-full mx-auto">
+              <PasswordReset />
             </section>
           </div>
         </div>
