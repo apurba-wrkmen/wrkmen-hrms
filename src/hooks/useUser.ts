@@ -18,3 +18,4 @@ export function useUser() {
     isAuthenticated: user?.role === "authenticated",
   };
 }
+

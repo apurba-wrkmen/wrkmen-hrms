@@ -106,7 +106,7 @@ export default function Dashboard() {
             </section>
 
             {/* Info Cards */}
-            <section className="flex gap-4">
+            <section className="flex gap-4 flex-wrap">
               {/* Employee Info */}
               <section className="rounded-2xl px-3 py-3 shadow-md w-fit mx-auto">
                 <div className="bg-amber-50 flex items-center gap-2 px-10 py-3">
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   <h2>Start Your Workday with a Tap</h2>
                   <Watch />
                 </div>
-                <div className="flex items-center justify-center h-full font-bold">
+                <div className="flex items-center justify-center py-10 font-bold">
                   {isCompleted ? (
                     <p>⚠️ See you again tomorrow</p>
                   ) : (

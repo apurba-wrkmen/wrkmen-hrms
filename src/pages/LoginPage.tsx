@@ -13,6 +13,8 @@ import { useLogin } from "@/hooks/useLogin";
 import toast from "react-hot-toast";
 import leftLogo from "@/assets/leftlogo.png";
 import hrms from "@/assets/wrkmen_hrms.svg";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormValues = {
   email: string;
@@ -20,6 +22,9 @@ type LoginFormValues = {
 };
 
 export default function LoginPage() {
+  const { isAuthenticated } = useUser();
+  const navigate = useNavigate();
+  if (isAuthenticated) navigate("/dashboard", { replace: true });
   const {
     register,
     handleSubmit,
@@ -41,9 +46,13 @@ export default function LoginPage() {
       <div className="flex lg:w-[800px] lg:h-[600px] rounded-md overflow-hidden shadow-lg flex-col md:flex-row">
         {/* Left Panel */}
         <div className="md:w-1/2 bg-background2 flex items-center justify-center">
-          <img src={leftLogo} alt="left logo" className="h-[400px] object-contain" />
+          <img
+            src={leftLogo}
+            alt="left logo"
+            className="h-[400px] object-contain"
+          />
         </div>
-
+   
         {/* Right Panel */}
         <div className="md:w-1/2 bg-white flex items-center justify-center">
           <Card className="w-full px-6 py-4 border-none shadow-none">
@@ -57,7 +66,10 @@ export default function LoginPage() {
             </CardHeader>
 
             <CardContent>
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-6"
+              >
                 {/* Email */}
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
@@ -74,7 +86,9 @@ export default function LoginPage() {
                     })}
                   />
                   {errors.email && (
-                    <p className="text-sm text-red-500 italic">{errors.email.message}</p>
+                    <p className="text-sm text-red-500 italic">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
 
@@ -85,10 +99,14 @@ export default function LoginPage() {
                     id="password"
                     type="password"
                     placeholder="••••••"
-                    {...register("password", { required: "Password is required!" })}
+                    {...register("password", {
+                      required: "Password is required!",
+                    })}
                   />
                   {errors.password && (
-                    <p className="text-sm text-red-500 italic">{errors.password.message}</p>
+                    <p className="text-sm text-red-500 italic">
+                      {errors.password.message}
+                    </p>
                   )}
                   <span
                     onClick={handleForget}
