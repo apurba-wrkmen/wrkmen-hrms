@@ -45,7 +45,7 @@ export default function LoginPage() {
     <div className="flex  items-center justify-center h-screen bg-background3 ">
       <div className="flex lg:w-[800px] lg:h-[600px] rounded-md overflow-hidden shadow-lg flex-col md:flex-row">
         {/* Left Panel */}
-        <div className="md:w-1/2 bg-background2 flex items-center justify-center">
+        <div className="md:w-1/2 bg-background2 md:flex items-center  hidden justify-center">
           <img
             src={leftLogo}
             alt="left logo"
