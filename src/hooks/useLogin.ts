@@ -37,7 +37,7 @@ export const useLogout = () => {
   const { mutate: logouts, isPending } = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.removeQueries({ queryKey: ["user"] });
       navigate("/", { replace: true });
     },
     onError: (error: Error) => {
